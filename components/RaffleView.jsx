@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
@@ -97,11 +98,13 @@ const RaffleView = ( ) => {
   };
 
   return (
+    <Suspense fallback = {<div>Loading...</div>}>
     <RaffleViewDetails
       raffle={raffle}
       userId={userId}
       onEnter={handleUpdateRaffle}
     />
+    </Suspense>
   );
 };
 
