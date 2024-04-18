@@ -11,8 +11,9 @@ import RaffleViewDetails from './RaffleViewDetails';
 const RaffleView = ( ) => {
   const { data: session } = useSession();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const raffleId = searchParams.get("id");
+  // const searchParams = useSearchParams();
+  const { id: raffleId } = router.query;
+  // const raffleId = searchParams.get("id");
   const [submitting, setSubmitting] = useState(false);
   const [raffle, setRaffle] = useState({
     name: "",
@@ -26,6 +27,8 @@ const RaffleView = ( ) => {
 
   useEffect(() => {
     const fetchRaffleDetails = async () => {
+      if (!raffleId) return;
+
       const response = await fetch(`/api/raffle/${raffleId}`);
       const data = await response.json();
 
@@ -38,7 +41,7 @@ const RaffleView = ( ) => {
       });
     };
 
-    if (raffleId) fetchRaffleDetails();
+    fetchRaffleDetails();
     console.log(raffle);
   }, [raffleId]);
 
