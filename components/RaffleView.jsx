@@ -12,8 +12,10 @@ const RaffleView = ( ) => {
   const { data: session } = useSession();
   const router = useRouter();
   // const searchParams = useSearchParams();
-  const { id: raffleId } = router.query;
+  // const { id: raffleId } = router.query;
   // const raffleId = searchParams.get("id");
+  const { query } = router; // Destructure query object
+  const raffleId = query?.id; // Access id property with optional chaining
   const [submitting, setSubmitting] = useState(false);
   const [raffle, setRaffle] = useState({
     name: "",
