@@ -2,9 +2,6 @@ import React from 'react';
 import Image from 'next/image';
 
 const RaffleViewDetails = ({raffle, userId, onEnter}) => {
-  if (!raffle || !raffle.creator || !raffle.participants) {
-    return <div>Loading...</div>;  
-  }
 
   const handlePickWinner = () => {
     if (raffle.participants.length === 0) {

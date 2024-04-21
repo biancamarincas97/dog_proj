@@ -4,7 +4,6 @@ import Raffle from "@/models/raffle";
 export const GET = async(request, {params}) =>{
     try {
         await connectToDB(); 
-
         const raffle = await Raffle.findById(params.id).populate('creator');
 
         if(!raffle) return new Response("Raffle not found!",{status:404})

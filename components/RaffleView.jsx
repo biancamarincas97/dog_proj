@@ -3,6 +3,7 @@
 import { Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
+// import { useRouter } from 'next/router';
 import React from 'react';
 import {useState, useEffect} from 'react';
 import RaffleViewDetails from './RaffleViewDetails';
@@ -11,12 +12,12 @@ import RaffleViewDetails from './RaffleViewDetails';
 const RaffleView = ( ) => {
   const { data: session } = useSession();
   const router = useRouter();
-  // const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
   // const { id: raffleId } = router.query;
-  // const raffleId = searchParams.get("id");
-  const { query } = router; // Destructure query object
-  const raffleId = query?.id; // Access id property with optional chaining
+  const raffleId = searchParams.get("id");
+  
   const [submitting, setSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [raffle, setRaffle] = useState({
     name: "",
     description: "",
@@ -25,14 +26,31 @@ const RaffleView = ( ) => {
     participants: [],
   });
 
-  const [userId, setUserId] = useState(session?.user?.id);
+  const [userId, setUserId] = useState(null);
+
+
 
   useEffect(() => {
+    console.log('raffleId SHOWS UP OR NOT?:', raffleId);
+    console.log('useEffect triggered');
+
     const fetchRaffleDetails = async () => {
       if (!raffleId) return;
 
+      console.log('Making fetch request');
+      setIsLoading(true);
       const response = await fetch(`/api/raffle/${raffleId}`);
+      
+
+
+      if(!response.ok){
+        console.log("Error fetching requessssssssss: ", response)
+        setIsLoading(false);
+        return;
+      }
+
       const data = await response.json();
+      console.log("API DATA: ", data)
 
       setRaffle({
         name: data.name,
@@ -41,11 +59,20 @@ const RaffleView = ( ) => {
         creator: data.creator,
         participants: data.participants,
       });
+
+
+      setIsLoading(false);
     };
 
-    fetchRaffleDetails();
-    console.log(raffle);
+    fetchRaffleDetails().catch(error => console.log("ERORR FETCHING DETS: ", error));
+   
   }, [raffleId]);
+
+
+  useEffect(() => {
+    setUserId(session?.user?.id);
+  }, [session]);
+
 
   const handleUpdateRaffle = async (e) => {
     e.preventDefault();
@@ -88,7 +115,7 @@ const RaffleView = ( ) => {
         },
         method: "PATCH",
         body: JSON.stringify({
-          userId //: session?.user.id,
+          userId   
         }),
       });
 
@@ -102,6 +129,8 @@ const RaffleView = ( ) => {
     }
   };
 
+
+
   return (
     <Suspense fallback = {<div>Loading...</div>}>
     <RaffleViewDetails
@@ -109,7 +138,7 @@ const RaffleView = ( ) => {
       userId={userId}
       onEnter={handleUpdateRaffle}
     />
-    </Suspense>
+     </Suspense>
   );
 };
 

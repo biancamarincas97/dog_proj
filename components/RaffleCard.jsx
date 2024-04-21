@@ -32,11 +32,12 @@ const RaffleCard = ({ raffle  }) => {
             {moment(raffle.drawDate).format("MM/DD/YYYY, h:mm a")}
           </p>
           <Link href={`/view-raffle?id=${raffle._id}`}>
+           
             
             <button  className="secondary_btn py-2 px-4 mx-auto block">
               See more <FontAwesomeIcon className="pl-2" icon={faCaretRight} />
             </button>
-            
+           
           </Link>
         </div>
       </div>
