@@ -13,7 +13,6 @@ const RaffleView = ( ) => {
   const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
-  // const { id: raffleId } = router.query;
   const raffleId = searchParams.get("id");
   
   const [submitting, setSubmitting] = useState(false);
@@ -133,11 +132,11 @@ const RaffleView = ( ) => {
 
   return (
     <Suspense fallback = {<div>Loading...</div>}>
-    <RaffleViewDetails
-      raffle={raffle}
-      userId={userId}
-      onEnter={handleUpdateRaffle}
-    />
+      <RaffleViewDetails
+        raffle={raffle}
+        userId={userId}
+        onEnter={handleUpdateRaffle}
+      />
      </Suspense>
   );
 };

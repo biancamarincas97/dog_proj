@@ -6,7 +6,9 @@ import RaffleView from '@/components/RaffleView';
 
 const ViewRaffle = () => {
   return (
-    <RaffleView/>
+    <Suspense fallback = {<div>Loading raffle page...</div>}>
+      <RaffleView/>
+    </Suspense>
   )
 }
 
